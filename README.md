@@ -18,12 +18,14 @@
 
 
 <h3 align="center">
-第一步：下载 App
+第一步：下载手机 App
 </h3>
 
 <div align="center">
 <a href="https://apps.apple.com/us/app/happy-claude-code-client/id6748571505"><img width="135" height="39" alt="appstore" src="https://github.com/user-attachments/assets/45e31a11-cf6b-40a2-a083-6dc8d1f01291" /></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://play.google.com/store/apps/details?id=com.ex3ndr.happy"><img width="135" height="39" alt="googleplay" src="https://github.com/user-attachments/assets/acbba639-858f-4c74-85c7-92a4096efbf5" /></a>
 </div>
+
+> 安装后打开 App，点击右上角服务器图标，将服务器地址设置为 `https://happy.yuanfengai.cn`
 
 <h3 align="center">
 第二步：在电脑上安装 CLI
@@ -34,32 +36,18 @@ curl -fsSL https://raw.githubusercontent.com/bi-boo/happy/main/install.sh | bash
 ```
 
 <h3 align="center">
-从源码运行（克隆仓库后）
+第三步：启动并扫码配对
 </h3>
 
 ```bash
-# from repository root
-yarn cli --help
-yarn cli codex
-```
-
-<h3 align="center">
-第三步：用 `happy` 替代 `claude` 或 `codex`
-</h3>
-
-```bash
-
-# Instead of: claude
-# Use: happy
-
+# 启动 happy（替代 claude 命令）
 happy
 
-# Instead of: codex
-# Use: happy codex
-
+# 或以 Codex 模式启动（替代 codex 命令）
 happy codex
-
 ```
+
+启动后终端会显示二维码，用手机 App 扫码即可配对连接。
 
 <div align="center"><img src="/.github/mascot.png" width="200" title="Happy Coder" alt="Happy Coder"/></div>
 
