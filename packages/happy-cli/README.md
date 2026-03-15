@@ -1,39 +1,39 @@
 # Happy
 
-Code on the go — control AI coding agents from your mobile device.
+随时随地编程 —— 用手机远程控制 AI 编程 Agent。
 
-Free. Open source. Code anywhere.
+免费、开源，随时随地写代码。
 
-## Installation
-
-```bash
-npm install -g happy-coder
-```
-
-## Run From Source
-
-From a repo checkout:
+## 安装
 
 ```bash
-# repository root
+curl -fsSL https://raw.githubusercontent.com/bi-boo/happy/main/install.sh | bash
+```
+
+## 从源码运行
+
+克隆仓库后执行：
+
+```bash
+# 在仓库根目录
 yarn cli --help
 
-# package directory
+# 在 package 目录
 yarn cli --help
 ```
 
-## Usage
+## 使用方法
 
-### Claude (default)
+### Claude（默认）
 
 ```bash
 happy
 ```
 
-This will:
-1. Start a Claude Code session
-2. Display a QR code to connect from your mobile device
-3. Allow real-time session sharing between Claude Code and your mobile app
+执行后将会：
+1. 启动一个 Claude Code 会话
+2. 显示 QR code，供手机端扫码连接
+3. 实现 Claude Code 与手机 App 之间的实时会话共享
 
 ### Gemini
 
@@ -41,147 +41,143 @@ This will:
 happy gemini
 ```
 
-Start a Gemini CLI session with remote control capabilities.
+启动带有远程控制能力的 Gemini CLI 会话。
 
-**First time setup:**
+**首次使用需先授权：**
 ```bash
-# Authenticate with Google
+# 使用 Google 账号登录
 happy connect gemini
 ```
 
-## Commands
+## 命令列表
 
-### Main Commands
+### 主命令
 
-- `happy` – Start Claude Code session (default)
-- `happy gemini` – Start Gemini CLI session
-- `happy codex` – Start Codex mode
-- `happy acp` – Start a generic ACP-compatible agent
+- `happy` – 启动 Claude Code 会话（默认）
+- `happy gemini` – 启动 Gemini CLI 会话
+- `happy codex` – 启动 Codex 模式
+- `happy acp` – 启动通用 ACP 兼容 Agent
 
-### Utility Commands
+### 工具命令
 
-- `happy auth` – Manage authentication
-- `happy connect` – Store AI vendor API keys in Happy cloud
-- `happy sandbox` – Configure sandbox runtime restrictions
-- `happy notify` – Send a push notification to your devices
-- `happy daemon` – Manage background service
-- `happy doctor` – System diagnostics & troubleshooting
+- `happy auth` – 管理身份认证
+- `happy connect` – 将 AI 服务商 API Key 存储到 Happy 云端
+- `happy sandbox` – 配置沙盒运行时限制
+- `happy notify` – 向你的设备发送推送通知
+- `happy daemon` – 管理后台服务
+- `happy doctor` – 系统诊断与故障排查
 
-### Connect Subcommands
-
-```bash
-happy connect gemini     # Authenticate with Google for Gemini
-happy connect claude     # Authenticate with Anthropic
-happy connect codex      # Authenticate with OpenAI
-happy connect status     # Show connection status for all vendors
-```
-
-### Gemini Subcommands
+### connect 子命令
 
 ```bash
-happy gemini                      # Start Gemini session
-happy gemini model set <model>    # Set default model
-happy gemini model get            # Show current model
-happy gemini project set <id>     # Set Google Cloud Project ID (for Workspace accounts)
-happy gemini project get          # Show current Google Cloud Project ID
+happy connect gemini     # 使用 Google 账号授权 Gemini
+happy connect claude     # 使用 Anthropic 账号授权
+happy connect codex      # 使用 OpenAI 账号授权
+happy connect status     # 查看所有服务商的连接状态
 ```
 
-**Available models:** `gemini-2.5-pro`, `gemini-2.5-flash`, `gemini-2.5-flash-lite`
-
-### Generic ACP Commands
+### gemini 子命令
 
 ```bash
-happy acp gemini                     # Run built-in Gemini ACP command
-happy acp opencode                   # Run built-in OpenCode ACP command
-happy acp opencode --verbose         # Include raw backend/envelope logs
-happy acp -- custom-agent --flag     # Run any ACP-compatible command directly
+happy gemini                      # 启动 Gemini 会话
+happy gemini model set <model>    # 设置默认模型
+happy gemini model get            # 查看当前模型
+happy gemini project set <id>     # 设置 Google Cloud Project ID（企业账号使用）
+happy gemini project get          # 查看当前 Google Cloud Project ID
 ```
 
-### Sandbox Subcommands
+**可用模型：** `gemini-2.5-pro`、`gemini-2.5-flash`、`gemini-2.5-flash-lite`
+
+### 通用 ACP 命令
 
 ```bash
-happy sandbox configure  # Interactive sandbox setup wizard
-happy sandbox status     # Show current sandbox configuration
-happy sandbox disable    # Disable sandboxing
+happy acp gemini                     # 运行内置 Gemini ACP 命令
+happy acp opencode                   # 运行内置 OpenCode ACP 命令
+happy acp opencode --verbose         # 包含原始后端/封包日志
+happy acp -- custom-agent --flag     # 直接运行任意 ACP 兼容命令
 ```
 
-## Options
+### sandbox 子命令
 
-### Claude Options
+```bash
+happy sandbox configure  # 交互式沙盒配置向导
+happy sandbox status     # 查看当前沙盒配置
+happy sandbox disable    # 禁用沙盒
+```
 
-- `-m, --model <model>` - Claude model to use (default: sonnet)
-- `-p, --permission-mode <mode>` - Permission mode: auto, default, or plan
-- `--claude-env KEY=VALUE` - Set environment variable for Claude Code
-- `--claude-arg ARG` - Pass additional argument to Claude CLI
+## 选项
 
-### Global Options
+### Claude 选项
 
-- `-h, --help` - Show help
-- `-v, --version` - Show version
-- `--no-sandbox` - Disable sandbox for the current Claude/Codex run
+- `-m, --model <model>` - 指定 Claude 模型（默认：sonnet）
+- `-p, --permission-mode <mode>` - 权限模式：auto、default 或 plan
+- `--claude-env KEY=VALUE` - 为 Claude Code 设置环境变量
+- `--claude-arg ARG` - 向 Claude CLI 传递额外参数
 
-## Environment Variables
+### 全局选项
 
-### Happy Configuration
+- `-h, --help` - 显示帮助信息
+- `-v, --version` - 显示版本号
+- `--no-sandbox` - 在本次 Claude/Codex 运行中禁用沙盒
 
-- `HAPPY_SERVER_URL` - Custom server URL (default: https://api.cluster-fluster.com)
-- `HAPPY_WEBAPP_URL` - Custom web app URL (default: https://app.happy.engineering)
-- `HAPPY_HOME_DIR` - Custom home directory for Happy data (default: ~/.happy)
-- `HAPPY_DISABLE_CAFFEINATE` - Disable macOS sleep prevention (set to `true`, `1`, or `yes`)
-- `HAPPY_EXPERIMENTAL` - Enable experimental features (set to `true`, `1`, or `yes`)
+## 环境变量
 
-### Gemini Configuration
+### Happy 配置
 
-- `GEMINI_MODEL` - Override default Gemini model
-- `GOOGLE_CLOUD_PROJECT` - Google Cloud Project ID (required for Workspace accounts)
+| 变量名 | 说明 | 默认值 |
+|--------|------|--------|
+| `HAPPY_SERVER_URL` | 自定义服务器地址 | `https://happy.yuanfengai.cn` |
+| `HAPPY_WEBAPP_URL` | 自定义 Web App 地址 | `https://app.happy.engineering` |
+| `HAPPY_HOME_DIR` | Happy 数据的自定义主目录 | `~/.happy` |
+| `HAPPY_DISABLE_CAFFEINATE` | 禁用 macOS 系统休眠防护（设为 `true`、`1` 或 `yes`） | — |
+| `HAPPY_EXPERIMENTAL` | 启用实验性功能（设为 `true`、`1` 或 `yes`） | — |
 
-## Gemini Authentication
+### Gemini 配置
 
-### Personal Google Account
+| 变量名 | 说明 |
+|--------|------|
+| `GEMINI_MODEL` | 覆盖默认 Gemini 模型 |
+| `GOOGLE_CLOUD_PROJECT` | Google Cloud Project ID（企业账号必填） |
 
-Personal Gmail accounts work out of the box:
+## Gemini 授权说明
+
+### 个人 Google 账号
+
+个人 Gmail 账号开箱即用：
 
 ```bash
 happy connect gemini
 happy gemini
 ```
 
-### Google Workspace Account
+### Google Workspace 企业账号
 
-Google Workspace (organization) accounts require a Google Cloud Project:
+Google Workspace（组织）账号需要配置 Google Cloud Project：
 
-1. Create a project in [Google Cloud Console](https://console.cloud.google.com/)
-2. Enable the Gemini API
-3. Set the project ID:
+1. 在 [Google Cloud Console](https://console.cloud.google.com/) 创建项目
+2. 启用 Gemini API
+3. 设置 Project ID：
 
 ```bash
 happy gemini project set your-project-id
 ```
 
-Or use environment variable:
+或通过环境变量设置：
 ```bash
 GOOGLE_CLOUD_PROJECT=your-project-id happy gemini
 ```
 
-**Guide:** https://goo.gle/gemini-cli-auth-docs#workspace-gca
+**参考文档：** https://goo.gle/gemini-cli-auth-docs#workspace-gca
 
-## Contributing
-
-Interested in contributing? See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and guidelines.
-
-## Requirements
+## 系统要求
 
 - Node.js >= 20.0.0
 
-### For Claude
+### Claude 依赖
 
-- Claude CLI installed & logged in (`claude` command available in PATH)
+- 已安装并登录 Claude CLI（`claude` 命令可在 PATH 中找到）
 
-### For Gemini
+### Gemini 依赖
 
-- Gemini CLI installed (`npm install -g @google/gemini-cli`)
-- Google account authenticated via `happy connect gemini`
-
-## License
-
-MIT
+- 已安装 Gemini CLI（`npm install -g @google/gemini-cli`）
+- 已通过 `happy connect gemini` 完成 Google 账号授权

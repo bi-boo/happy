@@ -1,155 +1,139 @@
 # Happy Agent
 
-CLI client for controlling Happy Coder agents remotely.
+远程控制 Happy Coder Agent 的 CLI 客户端。
 
-Unlike `happy-cli` which both runs and controls agents, `happy-agent` only controls them — creating sessions, sending messages, reading history, monitoring state, and stopping sessions.
+与同时运行和控制 Agent 的 `happy-cli` 不同，`happy-agent` 只负责控制 Agent——包括创建会话、发送消息、读取历史记录、监控状态以及停止会话。
 
-## Installation
+## 安装
 
-From the monorepo:
+在 monorepo 中构建：
 
 ```bash
 yarn workspace happy-agent build
 ```
 
-Or link globally:
+或全局链接：
 
 ```bash
 cd packages/happy-agent && npm link
 ```
 
-## Authentication
+## 认证
 
-Happy Agent uses account authentication via QR code, the same flow as linking a device in the Happy mobile app.
+Happy Agent 通过 QR code 进行账号认证，流程与在 Happy 移动端 App 中关联设备相同。
 
 ```bash
-# Authenticate by scanning QR code with the Happy mobile app
+# 用 Happy 移动端 App 扫描 QR code 完成认证
 happy-agent auth login
 
-# Check authentication status
+# 查看认证状态
 happy-agent auth status
 
-# Clear stored credentials
+# 清除已存储的凭据
 happy-agent auth logout
 ```
 
-Credentials are stored at `~/.happy/agent.key`.
+凭据存储于 `~/.happy/agent.key`。
 
-## Commands
+## 命令
 
-### List sessions
+### 列出会话
 
 ```bash
-# List all sessions
+# 列出所有会话
 happy-agent list
 
-# List only active sessions
+# 只列出活跃会话
 happy-agent list --active
 
-# Output as JSON
+# 以 JSON 格式输出
 happy-agent list --json
 ```
 
-### Session status
+### 会话状态
 
 ```bash
-# Get live session state (supports ID prefix matching)
+# 获取会话实时状态（支持 ID 前缀匹配）
 happy-agent status <session-id>
 
-# Output as JSON
+# 以 JSON 格式输出
 happy-agent status <session-id> --json
 ```
 
-### Create a session
+### 创建会话
 
 ```bash
-# Create a new session with a tag
+# 创建一个带标签的新会话
 happy-agent create --tag my-project
 
-# Specify a working directory
+# 指定工作目录
 happy-agent create --tag my-project --path /home/user/project
 
-# Output as JSON
+# 以 JSON 格式输出
 happy-agent create --tag my-project --json
 ```
 
-### Send a message
+### 发送消息
 
 ```bash
-# Send a message to a session
+# 向会话发送消息
 happy-agent send <session-id> "Fix the login bug"
 
-# Send and wait for the agent to finish
+# 发送消息并等待 Agent 执行完成
 happy-agent send <session-id> "Run the tests" --wait
 
-# Output as JSON
+# 以 JSON 格式输出
 happy-agent send <session-id> "Hello" --json
 ```
 
-### Message history
+### 消息历史
 
 ```bash
-# View message history
+# 查看消息历史
 happy-agent history <session-id>
 
-# Limit to last N messages
+# 限制显示最近 N 条消息
 happy-agent history <session-id> --limit 10
 
-# Output as JSON
+# 以 JSON 格式输出
 happy-agent history <session-id> --json
 ```
 
-### Stop a session
+### 停止会话
 
 ```bash
 happy-agent stop <session-id>
 ```
 
-### Wait for idle
+### 等待空闲
 
 ```bash
-# Wait for agent to become idle (default 300s timeout)
+# 等待 Agent 变为空闲状态（默认超时 300 秒）
 happy-agent wait <session-id>
 
-# Custom timeout
+# 自定义超时时间
 happy-agent wait <session-id> --timeout 60
 ```
 
-Exit code 0 when agent becomes idle, 1 on timeout.
+Agent 变为空闲时退出码为 0，超时时退出码为 1。
 
-## Environment Variables
+## 环境变量
 
-- `HAPPY_SERVER_URL` - API server URL (default: `https://api.cluster-fluster.com`)
-- `HAPPY_HOME_DIR` - Home directory for credential storage (default: `~/.happy`)
+- `HAPPY_SERVER_URL` - API 服务器地址（默认：`https://happy.yuanfengai.cn`）
+- `HAPPY_HOME_DIR` - 凭据存储的主目录（默认：`~/.happy`）
 
-## Session ID Matching
+## Session ID 匹配
 
-All commands that accept a `<session-id>` support prefix matching. You can provide the first few characters of a session ID and the CLI will resolve the full ID.
+所有接受 `<session-id>` 参数的命令均支持前缀匹配。你可以只提供 Session ID 的前几个字符，CLI 会自动解析出完整 ID。
 
-## Encryption
+## 加密
 
-All session data is end-to-end encrypted. New sessions use AES-256-GCM with per-session keys. Existing sessions created by other clients are decrypted using the appropriate key scheme (AES-256-GCM or legacy NaCl secretbox).
+所有会话数据均经过端对端加密。新会话使用 AES-256-GCM 配合每会话独立密钥进行加密。由其他客户端创建的已有会话将根据相应的加密方案（AES-256-GCM 或旧版 NaCl secretbox）进行解密。
 
-## Requirements
+## 环境要求
 
 - Node.js >= 20.0.0
-- A Happy mobile app account for authentication
-
-## Publishing to npm
-
-Maintainers can publish a new version:
-
-```bash
-yarn release               # From repo root: choose library to release
-# or directly:
-yarn workspace happy-agent release
-```
-
-This flow:
-- runs tests/build checks via `prepublishOnly`
-- creates a release commit and `happy-agent-vX.Y.Z` tag
-- creates a GitHub release with generated notes
-- publishes `happy-agent` to npm
+- 需要 Happy 移动端 App 账号用于认证
 
 ## License
 

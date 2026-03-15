@@ -1,42 +1,40 @@
 # Happy Server
 
-Minimal backend for open-source end-to-end encrypted Claude Code clients.
+面向开源端到端加密 Claude Code 客户端的极简后端。
 
-## What is Happy?
+## 什么是 Happy？
 
-Happy Server is the synchronization backbone for secure Claude Code clients. It enables multiple devices to share encrypted conversations while maintaining complete privacy - the server never sees your messages, only encrypted blobs it cannot read.
+Happy Server 是安全 Claude Code 客户端的同步核心。它让多台设备能够共享加密对话，同时保持完整的隐私——服务器永远看不到你的消息内容，只存储它无法解读的加密数据块。
 
-## Features
+## 功能特性
 
-- 🔐 **Zero Knowledge** - The server stores encrypted data but has no ability to decrypt it
-- 🎯 **Minimal Surface** - Only essential features for secure sync, nothing more  
-- 🕵️ **Privacy First** - No analytics, no tracking, no data mining
-- 📖 **Open Source** - Transparent implementation you can audit and self-host
-- 🔑 **Cryptographic Auth** - No passwords stored, only public key signatures
-- ⚡ **Real-time Sync** - WebSocket-based synchronization across all your devices
-- 📱 **Multi-device** - Seamless session management across phones, tablets, and computers
-- 🔔 **Push Notifications** - Notify when Claude Code finishes tasks or needs permissions (encrypted, we can't see the content)
-- 🌐 **Distributed Ready** - Built to scale horizontally when needed
+- 🔐 **零知识** - 服务器仅存储加密数据，无任何解密能力
+- 🎯 **最小化接口** - 仅包含安全同步所需的核心功能，无多余设计
+- 🕵️ **隐私优先** - 无数据分析、无追踪、无数据挖掘
+- 📖 **开源透明** - 实现完全公开，可自行审计和部署
+- 🔑 **密码学认证** - 不存储密码，仅使用公钥签名
+- ⚡ **实时同步** - 基于 WebSocket 的跨设备实时同步
+- 📱 **多设备支持** - 在手机、平板和电脑间无缝管理会话
+- 🔔 **推送通知** - Claude Code 完成任务或需要授权时发送通知（内容加密，服务端不可见）
+- 🌐 **分布式就绪** - 架构设计支持水平扩展
 
-## How It Works
+## 工作原理
 
-Your Claude Code clients generate encryption keys locally and use Happy Server as a secure relay. Messages are end-to-end encrypted before leaving your device. The server's job is simple: store encrypted blobs and sync them between your devices in real-time.
+你的 Claude Code 客户端在本地生成加密密钥，并使用 Happy Server 作为安全中继。消息在离开设备前即完成端到端加密。服务器的职责很简单：存储加密数据块，并在你的设备间实时同步。
 
-## Hosting
+## 服务托管
 
-**You don't need to self-host!** Our free cloud Happy Server at `happy-api.slopus.com` is just as secure as running your own. Since all data is end-to-end encrypted before it reaches our servers, we literally cannot read your messages even if we wanted to. The encryption happens on your device, and only you have the keys.
+本版本默认使用自建服务器 happy.yuanfengai.cn，所有数据端到端加密。
 
-That said, Happy Server is open source and self-hostable if you prefer running your own infrastructure. The security model is identical whether you use our servers or your own.
+## 使用 Docker 自托管
 
-## Self-Hosting with Docker
-
-The standalone Docker image runs everything in a single container with no external dependencies (no Postgres, no Redis, no S3).
+独立 Docker 镜像将所有内容运行在单一容器中，无需外部依赖（无需 PostgreSQL、Redis 或 S3）。
 
 ```bash
 docker build -t happy-server -f Dockerfile .
 ```
 
-Run from the monorepo root:
+从 monorepo 根目录运行：
 
 ```bash
 docker run -p 3005:3005 \
@@ -45,33 +43,33 @@ docker run -p 3005:3005 \
   happy-server
 ```
 
-This uses:
-- **PGlite** - embedded PostgreSQL (data stored in `/data/pglite`)
-- **Local filesystem** - for file uploads (stored in `/data/files`)
-- **In-memory event bus** - no Redis needed
+使用以下组件：
+- **PGlite** - 内嵌式 PostgreSQL（数据存储于 `/data/pglite`）
+- **本地文件系统** - 用于文件上传（存储于 `/data/files`）
+- **内存事件总线** - 无需 Redis
 
-Data persists in the `happy-data` Docker volume across container restarts.
+数据通过 `happy-data` Docker 卷持久化，容器重启后不丢失。
 
-### Environment Variables
+### 环境变量
 
-| Variable | Required | Default | Description |
+| 变量名 | 是否必填 | 默认值 | 说明 |
 |----------|----------|---------|-------------|
-| `HANDY_MASTER_SECRET` | Yes | - | Master secret for auth/encryption |
-| `PUBLIC_URL` | No | `http://localhost:3005` | Public base URL for file URLs sent to clients |
-| `PORT` | No | `3005` | Server port |
-| `DATA_DIR` | No | `/data` | Base data directory |
-| `PGLITE_DIR` | No | `/data/pglite` | PGlite database directory |
+| `HANDY_MASTER_SECRET` | 是 | - | 用于认证和加密的主密钥 |
+| `PUBLIC_URL` | 否 | `http://localhost:3005` | 发送给客户端的文件 URL 的公开基础地址 |
+| `PORT` | 否 | `3005` | 服务器端口 |
+| `DATA_DIR` | 否 | `/data` | 数据根目录 |
+| `PGLITE_DIR` | 否 | `/data/pglite` | PGlite 数据库目录 |
 
-### Optional: External Services
+### 可选：使用外部服务
 
-To use external Postgres or Redis instead of the embedded defaults, set:
+如需使用外部 PostgreSQL 或 Redis 替代内嵌默认组件，可设置以下变量：
 
-| Variable | Description |
+| 变量名 | 说明 |
 |----------|-------------|
-| `DATABASE_URL` | PostgreSQL connection URL (bypasses PGlite) |
-| `REDIS_URL` | Redis connection URL |
-| `S3_HOST` | S3/MinIO host (bypasses local file storage) |
+| `DATABASE_URL` | PostgreSQL 连接地址（替代 PGlite） |
+| `REDIS_URL` | Redis 连接地址 |
+| `S3_HOST` | S3/MinIO 主机地址（替代本地文件存储） |
 
-## License
+## 开源协议
 
-MIT - Use it, modify it, deploy it anywhere.
+MIT - 自由使用、修改、部署于任何环境。
